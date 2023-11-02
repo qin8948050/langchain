@@ -1,5 +1,6 @@
 import asyncio
 import inspect
+import logging
 import warnings
 from abc import ABC, abstractmethod
 from functools import partial
@@ -27,6 +28,8 @@ from langchain.schema import (
 from langchain.schema.language_model import BaseLanguageModel
 from langchain.schema.messages import AIMessage, BaseMessage, HumanMessage
 
+
+logger = logging.getLogger(__name__)
 
 def _get_verbosity() -> bool:
     return langchain.verbose
@@ -109,7 +112,9 @@ class BaseChatModel(BaseLanguageModel, ABC):
             dumpd(self), messages, invocation_params=params, options=options
         )
         results = []
+        logger.info(f"total messages:{len(messages)}")
         for i, m in enumerate(messages):
+            logger.info(f"num:{i},inputs:{m}")
             try:
                 results.append(
                     self._generate_with_cache(

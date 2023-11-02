@@ -392,6 +392,7 @@ class ChatOpenAI(BaseChatModel):
             )
             generations.append(gen)
         llm_output = {"token_usage": response["usage"], "model_name": self.model_name}
+        logger.info(f"llm_output:{llm_output},generations:{generations}")
         return ChatResult(generations=generations, llm_output=llm_output)
 
     async def _agenerate(
